@@ -10,6 +10,8 @@ import tw from "tailwind-react-native-classnames";
 import { useAtom } from "jotai";
 import { colors, currentScreen, footerScreen, tasks } from "../../store";
 import { useFocusEffect, useNavigation } from "@react-navigation/native";
+import { getDatabase } from "../../database";
+import { getAllTasks } from "../../queries";
 
 const Dasahboard = () => {
   const Stack = createStackNavigator();
@@ -18,9 +20,20 @@ const Dasahboard = () => {
 
   const [footerScreenName, setFooterScreenName] = useAtom(footerScreen);
   const [topics, setTopics] = useAtom(tasks);
+
   useFocusEffect(() => setFooterScreenName("DashboardScreen"));
 
-  useEffect(() => {}, [topics]);
+  useEffect(() => {
+    const fetchReminders = async () => {
+      const db = getDatabase();
+      if (db) {
+        const result = await db.getAllAsync(getAllTasks);
+        setTopics(result);
+      }
+    };
+
+    fetchReminders();
+  }, [topics]);
 
   return (
     <SafeAreaProvider style={{ backgroundColor: "white" }}>

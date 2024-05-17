@@ -14,6 +14,8 @@ import { Icon } from "react-native-elements";
 import SelectDropdown from "react-native-select-dropdown";
 
 import DatePicker from "react-native-neat-date-picker";
+import { createNewTask, getAllTasks } from "../../../../queries";
+import { getDatabase } from "../../../../database";
 
 const options = [
   { title: "Daily", value: "daily" },
@@ -45,7 +47,7 @@ const TaskOperation = () => {
   const [error, setError] = useState(false);
   const [errorDate, setErrorDate] = useState(false);
 
-  const createTask = () => {
+  const createTask = async () => {
     if (taskHeading === "") {
       setError(true);
       return;
@@ -69,7 +71,18 @@ const TaskOperation = () => {
       expiry,
     };
 
-    setTopics([...topics, task]);
+    const db = getDatabase();
+    if (db) {
+      const result = await db.runAsync(createNewTask, [
+        taskHeading,
+        taskDescription,
+        "incomplete",
+        type,
+        expiry,
+      ]);
+    }
+
+    // setTopics([...topics, task]);
 
     setTaskHeading("");
     setTaskDescription("");

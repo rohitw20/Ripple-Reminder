@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { KeyboardAvoidingView, Platform, Text, View } from "react-native";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import { createStackNavigator } from "@react-navigation/stack";
@@ -9,6 +9,7 @@ import Footer from "./Screens/Footer/Footer";
 import TaskOperation from "./Screens/Dashboard/Screens/TaskOperation/TaskOperation";
 import tw from "tailwind-react-native-classnames";
 import { colors, months } from "./store";
+import { initDatabase } from "./database";
 
 const App = () => {
   const Stack = createStackNavigator();
@@ -18,6 +19,14 @@ const App = () => {
   const day = String(today.getDate()).padStart(2, "0");
   const month = String(today.getMonth() + 1);
   const year = today.getFullYear();
+
+  useEffect(() => {
+    const initializeDb = async () => {
+      await initDatabase();
+    };
+
+    initializeDb();
+  }, []);
 
   return (
     <SafeAreaProvider>
