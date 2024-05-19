@@ -1,9 +1,6 @@
 import React, { useEffect } from "react";
 import { createStackNavigator } from "@react-navigation/stack";
-import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
-import DailyTasks from "./Screens/DailyTasks/DailyTasks";
-import OneTimeTasks from "./Screens/OneTimeTasks/OneTimeTasks";
-import TaskOperation from "./Screens/TaskOperation/TaskOperation";
+import { SafeAreaProvider } from "react-native-safe-area-context";
 import { Text, TouchableOpacity, View } from "react-native";
 import HomeScreen from "./Screens/HomeScreen/HomeScreen";
 import tw from "tailwind-react-native-classnames";
@@ -23,7 +20,7 @@ const Dasahboard = () => {
 
   useFocusEffect(() => setFooterScreenName("DashboardScreen"));
 
-  useEffect(() => {
+  useFocusEffect(() => {
     const fetchReminders = async () => {
       const db = getDatabase();
       if (db) {
@@ -33,7 +30,7 @@ const Dasahboard = () => {
     };
 
     fetchReminders();
-  }, [topics]);
+  });
 
   return (
     <SafeAreaProvider style={{ backgroundColor: "white" }}>

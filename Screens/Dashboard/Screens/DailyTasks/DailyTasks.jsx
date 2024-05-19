@@ -5,7 +5,7 @@ import tw from "tailwind-react-native-classnames";
 import TaskCard from "../../../../Components/TaskCard";
 import { useFocusEffect } from "@react-navigation/native";
 import { useAtom } from "jotai";
-import { colors, currentScreen, months, tasks } from "../../../../store";
+import { currentScreen, tasks } from "../../../../store";
 import { Icon } from "react-native-elements";
 
 const data = [1, 2, 3, 4, 5, 6];
@@ -36,7 +36,7 @@ const DailyTasks = () => {
             .map((item, index) => (
               <TaskCard key={index} data={item} />
             ))}
-          {topics.filter(
+          {topics?.filter(
             (item) => item.status === "incomplete" && item.type === "daily"
           ).length === 0 && (
             <View
@@ -63,7 +63,7 @@ const DailyTasks = () => {
             .map((item, index) => (
               <TaskCard key={index} data={item} />
             ))}
-          {topics.filter(
+          {topics?.filter(
             (item) => item.status === "complete" && item.type === "daily"
           ).length === 0 && (
             <View

@@ -1,30 +1,30 @@
 import { View, Text, Alert } from "react-native";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import tw from "tailwind-react-native-classnames";
 import { CheckBox, Icon } from "react-native-elements";
 import { colors, taskId, tasks } from "../store";
 import { TouchableOpacity } from "react-native";
 import { useAtom } from "jotai";
 import { useNavigation } from "@react-navigation/native";
+import { getDatabase } from "../database";
 
 const TaskCard = ({ data }) => {
   const [topic, setTopic] = useAtom(tasks);
   const [completed, setCompleted] = useState(data.status === "complete");
   const [id, setId] = useAtom(taskId);
 
+  const db = getDatabase();
+
   const navigation = useNavigation();
 
-  const toggleCheckbox = () => {
-    setTopic((prevTasks) =>
-      prevTasks.map((task) =>
-        task.id === data.id
-          ? {
-              ...task,
-              status: data.status === "complete" ? "incomplete" : "complete",
-            }
-          : task
-      )
-    );
+  const toggleCheckbox = async () => {
+    if (db) {
+      const result = await db.runAsync(
+        `UPDATE rippleReminder set status=? where taskId=?`,
+        [data.status === "complete" ? "incomplete" : "complete", data.taskId]
+      );
+    }
+
     if (data.status === "incomplete") {
       Alert.alert("Task Completed!", data.taskHeading);
     }
@@ -37,7 +37,7 @@ const TaskCard = ({ data }) => {
           { backgroundColor: colors.blue },
         ]}
         onPress={() => {
-          setId(data.id);
+          setId(data.taskId);
           navigation.navigate("ViewTaskScreen");
         }}
       >

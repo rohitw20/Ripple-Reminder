@@ -34,7 +34,7 @@ const OneTimeTasks = () => {
             .map((item, index) => (
               <TaskCard key={index} data={item} />
             ))}
-          {topics.filter(
+          {topics?.filter(
             (item) => item.status === "incomplete" && item.type === "oneTime"
           ).length === 0 && (
             <View
@@ -61,7 +61,7 @@ const OneTimeTasks = () => {
             .map((item, index) => (
               <TaskCard key={index} data={item} />
             ))}
-          {topics.filter(
+          {topics?.filter(
             (item) => item.status === "complete" && item.type === "oneTime"
           ).length === 0 && (
             <View

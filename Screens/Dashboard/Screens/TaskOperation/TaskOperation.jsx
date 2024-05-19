@@ -28,6 +28,14 @@ const TaskOperation = () => {
 
   const navigation = useNavigation();
 
+  const today = new Date();
+
+  const day = String(today.getDate()).padStart(2, "0");
+  const month = String(today.getMonth() + 1);
+  const year = today.getFullYear();
+
+  const db = getDatabase();
+
   const [showDatePickerSingle, setShowDatePickerSingle] = useState(false);
   const openDatePickerSingle = () => setShowDatePickerSingle(true);
   const onCancelSingle = () => {
@@ -43,7 +51,7 @@ const TaskOperation = () => {
   const [taskHeading, setTaskHeading] = useState("");
   const [taskDescription, setTaskDescription] = useState("");
   const [type, setType] = useState(options[0].value);
-  const [expiry, setExpiry] = useState("");
+  const [expiry, setExpiry] = useState(today);
   const [error, setError] = useState(false);
   const [errorDate, setErrorDate] = useState(false);
 
@@ -71,7 +79,6 @@ const TaskOperation = () => {
       expiry,
     };
 
-    const db = getDatabase();
     if (db) {
       const result = await db.runAsync(createNewTask, [
         taskHeading,

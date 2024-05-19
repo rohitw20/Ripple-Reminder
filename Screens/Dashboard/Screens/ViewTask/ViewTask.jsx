@@ -6,11 +6,15 @@ import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import tw from "tailwind-react-native-classnames";
 import { Icon } from "react-native-elements";
 import DatePicker from "react-native-neat-date-picker";
+import { getDatabase } from "../../../../database";
+import { getTaskById, updateCreatedTask } from "../../../../queries";
 
 const ViewTask = () => {
   const [id, setId] = useAtom(taskId);
   const [data, setData] = useState([]);
   const [topics, setTopics] = useAtom(tasks);
+
+  const db = getDatabase();
 
   const [view, setView] = useState(true);
   const [taskHeading, setTaskHeading] = useState(data?.taskHeading);
@@ -33,7 +37,7 @@ const ViewTask = () => {
     setExpiry(output.dateString);
   };
 
-  const handleSave = () => {
+  const handleSave = async () => {
     if (taskHeading === "") {
       setError(true);
       return;
@@ -56,22 +60,41 @@ const ViewTask = () => {
       type: data.type,
       expiry,
     };
-    setTopics((prevTasks) =>
-      prevTasks.map((task) =>
-        task.id === id ? { ...task, ...updatedTask } : task
-      )
-    );
+
+    if (db) {
+      const result = await db.runAsync(updateCreatedTask, [
+        taskHeading,
+        taskDescription,
+        data.status,
+        data.type,
+        expiry,
+        id,
+      ]);
+      setData(updatedTask);
+    }
+
+    // setTopics((prevTasks) =>
+    //   prevTasks.map((task) =>
+    //     task.id === id ? { ...task, ...updatedTask } : task
+    //   )
+    // );
 
     setView(true);
   };
 
   useEffect(() => {
-    const taskData = topics.filter((item) => item.id === id);
-    setData(taskData[0]);
-    setTaskHeading(taskData[0].taskHeading);
-    setTaskDescription(taskData[0].taskDescription);
-    setExpiry(taskData[0].expiry);
-  }, [topics]);
+    const getTaskByUsingId = async () => {
+      const taskData = await db.getFirstAsync(getTaskById, id);
+
+      // const taskData = topics?.filter((item) => item.taskId === id);
+      setData(taskData);
+      setTaskHeading(taskData.taskHeading);
+      setTaskDescription(taskData.taskDescription);
+      setExpiry(taskData.expiry);
+    };
+    getTaskByUsingId();
+  }, []);
+
   return (
     <View style={[tw`w-full bg-white h-full`, {}]}>
       <DatePicker
@@ -136,7 +159,7 @@ const ViewTask = () => {
       ) : (
         <View
           style={[
-            tw` flex p-5 bg-gray-100 rounded-xl shadow-2xl`,
+            tw` flex p-5 `,
             {
               margin: 12,
               height: "60%",
