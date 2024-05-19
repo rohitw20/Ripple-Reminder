@@ -7,6 +7,7 @@ import { TouchableOpacity } from "react-native";
 import { useAtom } from "jotai";
 import { useNavigation } from "@react-navigation/native";
 import { getDatabase } from "../database";
+import { deleteCreatedTask } from "../queries";
 
 const TaskCard = ({ data }) => {
   const [topic, setTopic] = useAtom(tasks);
@@ -29,6 +30,23 @@ const TaskCard = ({ data }) => {
       Alert.alert("Task Completed!", data.taskHeading);
     }
   };
+
+  const handleDelete = async () => {
+    if (db) {
+      await db.runAsync(deleteCreatedTask, data.taskId);
+    }
+  };
+
+  const handleDeleteTask = () => {
+    Alert.alert("Do you want to delete the task ?", "", [
+      {
+        text: "Cancel",
+        style: "cancel",
+      },
+      { text: "OK", onPress: handleDelete },
+    ]);
+  };
+
   return (
     <View style={tw` flex justify-center items-center w-full px-2`}>
       <TouchableOpacity
@@ -36,6 +54,7 @@ const TaskCard = ({ data }) => {
           tw`flex flex-row justify-between items-center py-2 w-full rounded-xl shadow-xl my-2 px-2`,
           { backgroundColor: colors.blue },
         ]}
+        onLongPress={handleDeleteTask}
         onPress={() => {
           setId(data.taskId);
           navigation.navigate("ViewTaskScreen");
