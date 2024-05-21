@@ -45,7 +45,14 @@ const ViewTask = () => {
       setError(false);
     }
 
-    if (data.type === "oneTime" && expiry === "") {
+    // console.log(expiry);
+
+    if (
+      data.type === "oneTime" &&
+      (expiry === "" ||
+        expiry === "{}" ||
+        (Object.keys(expiry).length === 0 && expiry.constructor === Object))
+    ) {
       setErrorDate(true);
       return;
     } else {
@@ -101,6 +108,7 @@ const ViewTask = () => {
         onCancel={onCancelSingle}
         onConfirm={onConfirmSingle}
         dateStringFormat="yyyy-mm-dd"
+        minDate={new Date()}
         colorOptions={{
           headerColor: colors.blue,
           selectedDateBackgroundColor: colors.green,
@@ -135,10 +143,10 @@ const ViewTask = () => {
       {view ? (
         <View
           style={[
-            tw` flex p-5 rounded-xl shadow-2xl`,
+            tw` flex-1 p-5  shadow-2xl`,
             {
-              margin: 12,
-              height: "60%",
+              // margin: 12,
+              // height: "60%",
               gap: 10,
               backgroundColor: colors.blue,
             },
@@ -150,9 +158,18 @@ const ViewTask = () => {
           <Text style={[tw`text-xl font-medium text-white italic`]}>
             {data?.taskDescription ? data?.taskDescription : "No Description"}
           </Text>
-          <Text style={[tw`text-lg font-medium text-white italic`]}>
-            Expiry: {data?.type === "oneTime" ? expiry : "Today"}
-          </Text>
+          <View style={tw`flex flex-row items-center`}>
+            <Icon
+              name="calendar-outline"
+              type="ionicon"
+              size={25}
+              color={"white"}
+            />
+            <Text style={[tw`text-lg font-medium text-white italic`]}>
+              {" "}
+              Due: {data?.type === "oneTime" ? expiry : "Today"}
+            </Text>
+          </View>
         </View>
       ) : (
         <View

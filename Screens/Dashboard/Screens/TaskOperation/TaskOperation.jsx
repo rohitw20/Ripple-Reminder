@@ -35,6 +35,8 @@ const TaskOperation = () => {
   const month = String(today.getMonth() + 1);
   const year = today.getFullYear();
 
+  const todayDate = `${year}-${month}-${day}`;
+
   const db = getDatabase();
 
   const [showDatePickerSingle, setShowDatePickerSingle] = useState(false);
@@ -54,7 +56,7 @@ const TaskOperation = () => {
   const [type, setType] = useState(
     screen === "DailyTasksScreen" ? options[0].value : options[1].value
   );
-  const [expiry, setExpiry] = useState(today);
+  const [expiry, setExpiry] = useState(todayDate);
   const [error, setError] = useState(false);
   const [errorDate, setErrorDate] = useState(false);
 
@@ -66,7 +68,12 @@ const TaskOperation = () => {
       setError(false);
     }
 
-    if (type === "oneTime" && expiry === "") {
+    if (
+      type === "oneTime" &&
+      (expiry === "" ||
+        expiry === "{}" ||
+        (Object.keys(expiry).length === 0 && expiry.constructor === Object))
+    ) {
       setErrorDate(true);
       return;
     } else {
@@ -125,6 +132,7 @@ const TaskOperation = () => {
         onCancel={onCancelSingle}
         onConfirm={onConfirmSingle}
         dateStringFormat="yyyy-mm-dd"
+        minDate={today}
         colorOptions={{
           headerColor: colors.blue,
           selectedDateBackgroundColor: colors.green,

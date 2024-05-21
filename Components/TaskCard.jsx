@@ -99,16 +99,24 @@ const TaskCard = ({ data }) => {
             aria-checked
             iconRight={false}
           />
-          <View>
+          <View style={[tw`flex`, { gap: 5 }]}>
             <Text style={[tw`text-2xl font-bold text-white`]}>
               {data.taskHeading.length < 18
                 ? data.taskHeading
                 : `${data.taskHeading.substring(0, 18)}...`}
             </Text>
-
-            <Text style={[tw`text-sm text-white`]}>
-              Expiry: {data.type === "oneTime" ? data.expiry : "Today"}
-            </Text>
+            <View style={[tw`flex flex-row items-center `]}>
+              <Icon
+                name="calendar-outline"
+                type="ionicon"
+                size={20}
+                color={"white"}
+              />
+              <Text style={[tw`text-sm text-white`]}>
+                {" "}
+                Due: {data.type === "oneTime" ? data.expiry : "Today"}
+              </Text>
+            </View>
           </View>
         </View>
       </TouchableOpacity>
