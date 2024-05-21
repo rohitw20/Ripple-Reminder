@@ -143,10 +143,10 @@ const ViewTask = () => {
       {view ? (
         <View
           style={[
-            tw` flex-1 p-5  shadow-2xl`,
+            tw` flex p-5 rounded-xl shadow-2xl`,
             {
-              // margin: 12,
-              // height: "60%",
+              margin: 12,
+              height: "60%",
               gap: 10,
               backgroundColor: colors.blue,
             },
