@@ -8,7 +8,7 @@ import {
 import React, { useState } from "react";
 import tw from "tailwind-react-native-classnames";
 import { useAtom } from "jotai";
-import { colors, footerScreen, tasks } from "../../../../store";
+import { colors, currentScreen, footerScreen, tasks } from "../../../../store";
 import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import { Icon } from "react-native-elements";
 import SelectDropdown from "react-native-select-dropdown";
@@ -25,6 +25,7 @@ const options = [
 const TaskOperation = () => {
   const [footerScreenName, setFooterScreenName] = useAtom(footerScreen);
   const [topics, setTopics] = useAtom(tasks);
+  const [screen, _] = useAtom(currentScreen);
 
   const navigation = useNavigation();
 
@@ -50,7 +51,9 @@ const TaskOperation = () => {
 
   const [taskHeading, setTaskHeading] = useState("");
   const [taskDescription, setTaskDescription] = useState("");
-  const [type, setType] = useState(options[0].value);
+  const [type, setType] = useState(
+    screen === "DailyTasksScreen" ? options[0].value : options[1].value
+  );
   const [expiry, setExpiry] = useState(today);
   const [error, setError] = useState(false);
   const [errorDate, setErrorDate] = useState(false);
@@ -83,7 +86,6 @@ const TaskOperation = () => {
       const result = await db.runAsync(createNewTask, [
         taskHeading,
         taskDescription,
-        "incomplete",
         type,
         expiry,
       ]);
@@ -122,7 +124,7 @@ const TaskOperation = () => {
         mode={"single"}
         onCancel={onCancelSingle}
         onConfirm={onConfirmSingle}
-        dateStringFormat="dd/mm/yyyy"
+        dateStringFormat="yyyy-mm-dd"
         colorOptions={{
           headerColor: colors.blue,
           selectedDateBackgroundColor: colors.green,
@@ -185,7 +187,7 @@ const TaskOperation = () => {
           onSelect={(selectedItem, index) => {
             setType(selectedItem.value);
           }}
-          defaultValue={options[0]}
+          defaultValue={screen === "DailyTasksScreen" ? options[0] : options[1]}
           renderButton={(selectedItem, isOpened) => {
             return (
               <View style={styles.dropdownButtonStyle}>

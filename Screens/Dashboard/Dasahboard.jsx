@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useCallback, useEffect } from "react";
 import { createStackNavigator } from "@react-navigation/stack";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { Text, TouchableOpacity, View } from "react-native";
@@ -20,17 +20,40 @@ const Dasahboard = () => {
 
   useFocusEffect(() => setFooterScreenName("DashboardScreen"));
 
-  useFocusEffect(() => {
-    const fetchReminders = async () => {
-      const db = getDatabase();
-      if (db) {
-        const result = await db.getAllAsync(getAllTasks);
-        setTopics(result);
-      }
-    };
+  useFocusEffect(
+    useCallback(() => {
+      let isActive = true;
 
-    fetchReminders();
-  });
+      const fetchReminders = async () => {
+        const db = getDatabase();
+        if (db) {
+          let result = [];
+          const data = await db.getAllAsync(
+            `SELECT * FROM rippleReminder WHERE expiry >= DATE('now')`
+          );
+
+          for (const item of data) {
+            const currentData = { ...item };
+            const newData = await db.getAllAsync(
+              `SELECT * FROM ripplestatus WHERE taskId = ${item.taskId}`
+            );
+            currentData.status = newData[0]?.status || "incomplete";
+            result.push(currentData);
+          }
+
+          if (isActive) {
+            setTopics(result);
+          }
+        }
+      };
+
+      fetchReminders();
+
+      return () => {
+        isActive = false;
+      };
+    }, [topics])
+  );
 
   return (
     <SafeAreaProvider style={{ backgroundColor: "white" }}>

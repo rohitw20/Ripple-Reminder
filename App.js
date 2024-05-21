@@ -9,7 +9,7 @@ import Footer from "./Screens/Footer/Footer";
 import TaskOperation from "./Screens/Dashboard/Screens/TaskOperation/TaskOperation";
 import tw from "tailwind-react-native-classnames";
 import { colors, months } from "./store";
-import { initDatabase } from "./database";
+import { getDatabase, initDatabase } from "./database";
 
 const App = () => {
   const Stack = createStackNavigator();
@@ -23,6 +23,10 @@ const App = () => {
   useEffect(() => {
     const initializeDb = async () => {
       await initDatabase();
+
+      // const db = getDatabase();
+      // await db.execAsync(`DROP TABLE rippleReminder`);
+      // await db.execAsync(`DROP TABLE ripplestatus`);
     };
 
     initializeDb();

@@ -56,7 +56,6 @@ const ViewTask = () => {
       id,
       taskHeading,
       taskDescription,
-      status: data.status,
       type: data.type,
       expiry,
     };
@@ -65,7 +64,6 @@ const ViewTask = () => {
       const result = await db.runAsync(updateCreatedTask, [
         taskHeading,
         taskDescription,
-        data.status,
         data.type,
         expiry,
         id,
@@ -102,7 +100,7 @@ const ViewTask = () => {
         mode={"single"}
         onCancel={onCancelSingle}
         onConfirm={onConfirmSingle}
-        dateStringFormat="dd/mm/yyyy"
+        dateStringFormat="yyyy-mm-dd"
         colorOptions={{
           headerColor: colors.blue,
           selectedDateBackgroundColor: colors.green,

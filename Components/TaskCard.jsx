@@ -16,19 +16,39 @@ const TaskCard = ({ data }) => {
 
   const db = getDatabase();
 
+  const today = new Date();
+
+  const day = String(today.getDate()).padStart(2, "0");
+  const month = String(today.getMonth() + 1).padStart(2, "0");
+  const year = today.getFullYear();
+
+  const todayDate = `${year}-${month}-${day}`;
+
   const navigation = useNavigation();
 
-  const toggleCheckbox = async () => {
+  const handleComplete = async () => {
     if (db) {
-      const result = await db.runAsync(
-        `UPDATE rippleReminder set status=? where taskId=?`,
-        [data.status === "complete" ? "incomplete" : "complete", data.taskId]
+      await db.runAsync(
+        `INSERT INTO ripplestatus (taskId, status, expiry) VALUES(?, ?, ?)`,
+        [data.taskId, "complete", todayDate]
       );
     }
+  };
 
-    if (data.status === "incomplete") {
-      Alert.alert("Task Completed!", data.taskHeading);
-    }
+  const toggleCheckbox = () => {
+    // if (db) {
+    // const result = await db.runAsync(
+    //   `UPDATE rippleReminder set status=? where taskId=?`,
+    //   [data.status === "complete" ? "incomplete" : "complete", data.taskId]
+    // );
+    // }
+    Alert.alert("Mark this task as complete ?", "", [
+      {
+        text: "No",
+        style: "cancel",
+      },
+      { text: "Yes", onPress: handleComplete },
+    ]);
   };
 
   const handleDelete = async () => {
@@ -67,6 +87,7 @@ const TaskCard = ({ data }) => {
           ]}
         >
           <CheckBox
+            disabled={completed ? true : false}
             checked={completed}
             onPress={toggleCheckbox}
             iconType="material-community"

@@ -28,7 +28,27 @@ const HomeScreen = () => {
   const Stack = createStackNavigator();
   return (
     <View style={tw`bg-white h-full justify-between `}>
-      <Stack.Navigator screenOptions={{ headerShown: false }}>
+      <Stack.Navigator
+        screenOptions={{
+          headerShown: false,
+          gestureEnabled: true, // Enable gesture navigation
+          gestureDirection: "horizontal", // Set gesture direction
+          cardStyleInterpolator: ({ current, layouts }) => {
+            return {
+              cardStyle: {
+                transform: [
+                  {
+                    translateX: current.progress.interpolate({
+                      inputRange: [0, 1],
+                      outputRange: [layouts.screen.width, 0],
+                    }),
+                  },
+                ],
+              },
+            };
+          },
+        }}
+      >
         <Stack.Screen
           name="DailyTasksScreen"
           component={DailyTasks}
