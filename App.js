@@ -17,7 +17,6 @@ const App = () => {
   useEffect(() => {
     const initializeDb = async () => {
       await initDatabase();
-      console.log("hello");
 
       const db = getDatabase();
 
