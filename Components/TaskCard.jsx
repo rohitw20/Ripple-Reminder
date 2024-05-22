@@ -2,7 +2,7 @@ import { View, Text, Alert } from "react-native";
 import React, { useEffect, useState } from "react";
 import tw from "tailwind-react-native-classnames";
 import { CheckBox, Icon } from "react-native-elements";
-import { colors, taskId, tasks } from "../store";
+import { colors, taskId, tasks, todayDate } from "../store";
 import { TouchableOpacity } from "react-native";
 import { useAtom } from "jotai";
 import { useNavigation } from "@react-navigation/native";
@@ -16,22 +16,25 @@ const TaskCard = ({ data }) => {
 
   const db = getDatabase();
 
-  const today = new Date();
-
-  const day = String(today.getDate()).padStart(2, "0");
-  const month = String(today.getMonth() + 1).padStart(2, "0");
-  const year = today.getFullYear();
-
-  const todayDate = `${year}-${month}-${day}`;
-
   const navigation = useNavigation();
 
   const handleComplete = async () => {
     if (db) {
-      await db.runAsync(
-        `INSERT INTO ripplestatus (taskId, status, expiry) VALUES(?, ?, ?)`,
-        [data.taskId, "complete", todayDate]
+      const result = await db.getAllAsync(
+        `SELECT * FROM ripplestatus where expiry=? and taskId=?`,
+        [todayDate, data.taskId]
       );
+      if (result.length > 0) {
+        await db.runAsync(
+          `DELETE FROM ripplestatus WHERE expiry=? and taskId=?`,
+          [todayDate, data.taskId]
+        );
+      } else {
+        await db.runAsync(
+          `INSERT INTO ripplestatus (taskId, status, expiry) VALUES(?, ?, ?)`,
+          [data.taskId, "complete", todayDate]
+        );
+      }
     }
   };
 
@@ -71,22 +74,26 @@ const TaskCard = ({ data }) => {
     <View style={tw` flex justify-center items-center w-full px-2`}>
       <TouchableOpacity
         style={[
-          tw`flex flex-row justify-between items-center py-2 w-full rounded-xl shadow-xl my-2 px-2`,
-          { backgroundColor: colors.blue },
+          tw`flex flex-row justify-between items-center py-3 w-full rounded-xl shadow-xl my-2 px-2`,
+          {
+            backgroundColor:
+              data.status === "complete" ? colors.green : colors.blue,
+          },
         ]}
         onLongPress={handleDeleteTask}
         onPress={() => {
           setId(data.taskId);
-          navigation.navigate("ViewTaskScreen");
+          handleComplete();
+          // navigation.navigate("ViewTaskScreen");
         }}
       >
         <View
           style={[
-            tw`flex flex-row justify-start items-center`,
+            tw`flex flex-row justify-center items-center`,
             { width: "100%" },
           ]}
         >
-          <CheckBox
+          {/* <CheckBox
             disabled={completed ? true : false}
             checked={completed}
             onPress={toggleCheckbox}
@@ -94,18 +101,18 @@ const TaskCard = ({ data }) => {
             checkedIcon="checkbox-marked"
             uncheckedIcon="checkbox-blank-outline"
             checkedColor={colors.green}
-            size={50}
+            size={40}
             uncheckedColor="white"
             aria-checked
             iconRight={false}
-          />
-          <View style={[tw`flex`, { gap: 5 }]}>
-            <Text style={[tw`text-2xl font-bold text-white`]}>
-              {data.taskHeading.length < 18
-                ? data.taskHeading
-                : `${data.taskHeading.substring(0, 18)}...`}
-            </Text>
-            <View style={[tw`flex flex-row items-center `]}>
+          /> */}
+          {/* <View style={[tw`flex`, { gap: 5 }]}> */}
+          <Text style={[tw`text-2xl font-bold text-white`]}>
+            {data.taskHeading.length < 18
+              ? data.taskHeading
+              : `${data.taskHeading.substring(0, 18)}...`}
+          </Text>
+          {/* <View style={[tw`flex flex-row items-center `]}>
               <Icon
                 name="calendar-outline"
                 type="ionicon"
@@ -117,7 +124,7 @@ const TaskCard = ({ data }) => {
                 Due: {data.type === "oneTime" ? data.expiry : "Today"}
               </Text>
             </View>
-          </View>
+          </View> */}
         </View>
       </TouchableOpacity>
     </View>

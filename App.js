@@ -8,25 +8,64 @@ import Statistics from "./Screens/Statistics/Statistics";
 import Footer from "./Screens/Footer/Footer";
 import TaskOperation from "./Screens/Dashboard/Screens/TaskOperation/TaskOperation";
 import tw from "tailwind-react-native-classnames";
-import { colors, months } from "./store";
+import { colors, day, month, months, todayDate, year } from "./store";
 import { getDatabase, initDatabase } from "./database";
 
 const App = () => {
   const Stack = createStackNavigator();
 
-  const today = new Date();
-
-  const day = String(today.getDate()).padStart(2, "0");
-  const month = String(today.getMonth() + 1);
-  const year = today.getFullYear();
-
   useEffect(() => {
     const initializeDb = async () => {
       await initDatabase();
+      console.log("hello");
 
-      // const db = getDatabase();
+      const db = getDatabase();
+
+      const result = await db.getAllAsync(`SELECT * FROM dateKeeper`);
+      const prevDate = result[0]?.dailyDate || todayDate;
+
+      if (todayDate > prevDate) {
+        const allTasks = await db.getAllAsync(
+          `SELECT * FROM rippleReminder WHERE expiry=(?) AND type=(?)`,
+          [prevDate, "daily"]
+        );
+        const completedTasks = await db.getAllAsync(
+          `
+          SELECT * FROM ripplestatus WHERE expiry=(?)
+        `,
+          prevDate
+        );
+        const incompleteTasks = allTasks.filter(
+          (task) =>
+            !completedTasks.some(
+              (completed) =>
+                completed.taskId === task.taskId &&
+                completed.status === "complete"
+            )
+        );
+        for (const item of incompleteTasks) {
+          await db.runAsync(
+            `INSERT INTO ripplestatus (taskId, status, expiry) VALUES(?, ?, ?)`,
+            [item.taskId, "expired", prevDate]
+          );
+        }
+        for (const item of allTasks) {
+          await db.runAsync(
+            `UPDATE rippleReminder set expiry=? where type='daily'`,
+            [todayDate]
+          );
+        }
+        await db.runAsync(`UPDATE datekeeper set dailydate=?`, todayDate);
+      }
+
+      // console.log(await db.getAllAsync(`select * from datekeeper`));
+
+      // const asdf = await db.getAllAsync(`SELECT * FROM ripplereminder`);
+      // const bsdf = await db.getAllAsync(`SELECT * FROM ripplestatus`);
+      // console.log(asdf, bsdf);
       // await db.execAsync(`DROP TABLE rippleReminder`);
       // await db.execAsync(`DROP TABLE ripplestatus`);
+      // await db.execAsync(`DROP TABLE dateKeeper`);
     };
 
     initializeDb();

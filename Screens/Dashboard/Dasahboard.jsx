@@ -5,7 +5,13 @@ import { Text, TouchableOpacity, View } from "react-native";
 import HomeScreen from "./Screens/HomeScreen/HomeScreen";
 import tw from "tailwind-react-native-classnames";
 import { useAtom } from "jotai";
-import { colors, currentScreen, footerScreen, tasks } from "../../store";
+import {
+  colors,
+  currentScreen,
+  footerScreen,
+  tasks,
+  todayDate,
+} from "../../store";
 import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import { getDatabase } from "../../database";
 import { getAllTasks } from "../../queries";
@@ -35,7 +41,8 @@ const Dasahboard = () => {
           for (const item of data) {
             const currentData = { ...item };
             const newData = await db.getAllAsync(
-              `SELECT * FROM ripplestatus WHERE taskId = ${item.taskId}`
+              `SELECT * FROM ripplestatus WHERE taskId =? and expiry>=?`,
+              [item.taskId, todayDate]
             );
             currentData.status = newData[0]?.status || "incomplete";
             result.push(currentData);

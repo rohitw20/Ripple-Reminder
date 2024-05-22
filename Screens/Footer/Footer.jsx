@@ -63,7 +63,7 @@ const Footer = () => {
       </View>
       <View
         style={[
-          tw`absolute w-full py-1 bottom-9  flex flex-row justify-center`,
+          tw`absolute w-full py-1 bottom-20 px-2  flex flex-row justify-end`,
           ,
         ]}
       >

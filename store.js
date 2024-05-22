@@ -1,5 +1,12 @@
 import { atom } from "jotai";
 
+export const today = new Date();
+
+export const day = String(today.getDate()).padStart(2, "0");
+export const month = String(today.getMonth() + 1).padStart(2, "0");
+export const year = today.getFullYear();
+export const todayDate = `${year}-${month}-${day}`;
+
 export const colors = {
   blue: `#2D75BA`,
   green: `#45BC61`,

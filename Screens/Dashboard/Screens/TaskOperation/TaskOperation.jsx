@@ -8,7 +8,14 @@ import {
 import React, { useState } from "react";
 import tw from "tailwind-react-native-classnames";
 import { useAtom } from "jotai";
-import { colors, currentScreen, footerScreen, tasks } from "../../../../store";
+import {
+  colors,
+  currentScreen,
+  footerScreen,
+  tasks,
+  today,
+  todayDate,
+} from "../../../../store";
 import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import { Icon } from "react-native-elements";
 import SelectDropdown from "react-native-select-dropdown";
@@ -28,14 +35,6 @@ const TaskOperation = () => {
   const [screen, _] = useAtom(currentScreen);
 
   const navigation = useNavigation();
-
-  const today = new Date();
-
-  const day = String(today.getDate()).padStart(2, "0");
-  const month = String(today.getMonth() + 1);
-  const year = today.getFullYear();
-
-  const todayDate = `${year}-${month}-${day}`;
 
   const db = getDatabase();
 
@@ -132,7 +131,7 @@ const TaskOperation = () => {
         onCancel={onCancelSingle}
         onConfirm={onConfirmSingle}
         dateStringFormat="yyyy-mm-dd"
-        minDate={today}
+        // minDate={today}
         colorOptions={{
           headerColor: colors.blue,
           selectedDateBackgroundColor: colors.green,
