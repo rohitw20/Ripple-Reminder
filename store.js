@@ -36,8 +36,35 @@ export const months = [
   "Dec",
 ];
 
+export const getPrevious7Days = () => {
+  const daysOfWeek = [
+    "Sunday",
+    "Monday",
+    "Tuesday",
+    "Wednesday",
+    "Thursday",
+    "Friday",
+    "Saturday",
+  ];
+  const today = new Date();
+  let daysArray = [];
+
+  for (let i = 0; i < 7; i++) {
+    const date = new Date(today);
+    date.setDate(today.getDate() - i);
+    const day = date.getDay();
+    daysArray.push({
+      date: date.toLocaleDateString("en-GB"), // format DD/MM/YYYY
+      day: daysOfWeek[day],
+    });
+  }
+
+  return daysArray.reverse(); // to return the dates in chronological order
+};
+
 export const currentScreen = atom("DailyTasksScreen");
 export const footerScreen = atom("DashboardScreen");
+export const currentProgressScreen = atom("ProgressRing");
 export const taskId = atom("");
 
 // export const tasks = atom([]);

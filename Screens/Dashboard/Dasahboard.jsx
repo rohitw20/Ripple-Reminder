@@ -75,10 +75,17 @@ const Dasahboard = () => {
             navigator.navigate("DailyTasksScreen");
           }}
           style={[
-            tw` py-4 border border-gray-200 w-1/2 flex justify-center items-center`,
+            tw` py-4  w-1/2 flex justify-center items-center`,
             {
               backgroundColor:
                 screenName === "DailyTasksScreen" ? colors.green : "white",
+              borderColor:
+                screenName === "DailyTasksScreen"
+                  ? colors.green
+                  : "rgb(209 213 219)",
+              borderBottomWidth: 1,
+              borderRightWidth: 1,
+              borderTopWidth: 0,
             },
           ]}
         >
@@ -96,10 +103,17 @@ const Dasahboard = () => {
             navigator.navigate("OneTimeTasksScreen");
           }}
           style={[
-            tw` py-4 border border-gray-200 w-1/2 flex justify-center items-center`,
+            tw` py-4  w-1/2 flex justify-center items-center`,
             {
               backgroundColor:
                 screenName === "OneTimeTasksScreen" ? colors.green : "white",
+              borderBottomColor:
+                screenName === "OneTimeTasksScreen"
+                  ? colors.green
+                  : "rgb(209 213 219)",
+              borderBottomWidth: 1,
+              borderRightWidth: 0,
+              borderTopWidth: 0,
             },
           ]}
         >

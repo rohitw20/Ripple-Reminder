@@ -25,8 +25,8 @@ const App = () => {
 
       if (todayDate > prevDate) {
         const allTasks = await db.getAllAsync(
-          `SELECT * FROM rippleReminder WHERE expiry=(?) AND type=(?)`,
-          [prevDate, "daily"]
+          `SELECT * FROM rippleReminder WHERE expiry=(?)`,
+          [prevDate]
         );
         const completedTasks = await db.getAllAsync(
           `
