@@ -48,10 +48,9 @@ const ViewTask = () => {
     // console.log(expiry);
 
     if (
-      data.type === "oneTime" &&
-      (expiry === "" ||
-        expiry === "{}" ||
-        (Object.keys(expiry).length === 0 && expiry.constructor === Object))
+      expiry === "" ||
+      expiry === "{}" ||
+      (Object.keys(expiry).length === 0 && expiry.constructor === Object)
     ) {
       setErrorDate(true);
       return;
@@ -63,7 +62,6 @@ const ViewTask = () => {
       id,
       taskHeading,
       taskDescription,
-      type: data.type,
       expiry,
     };
 
@@ -71,7 +69,6 @@ const ViewTask = () => {
       const result = await db.runAsync(updateCreatedTask, [
         taskHeading,
         taskDescription,
-        data.type,
         expiry,
         id,
       ]);
@@ -127,7 +124,7 @@ const ViewTask = () => {
           style={tw`bg-white flex items-center justify-center p-2 rounded-full shadow-lg`}
           onPress={() => {
             setView(true);
-            navigation.goBack();
+            navigation.navigate("CalenderScreen");
           }}
         >
           <Icon name="close" type="ionicon" size={30} />
@@ -167,7 +164,7 @@ const ViewTask = () => {
             />
             <Text style={[tw`text-lg font-medium text-white italic`]}>
               {" "}
-              Due: {data?.type === "oneTime" ? expiry : "Today"}
+              Due: {expiry}
             </Text>
           </View>
         </View>
@@ -226,57 +223,57 @@ const ViewTask = () => {
               maxLength={500}
             />
           </View>
-          {data?.type === "oneTime" && (
+          {/* {data?.type === "oneTime" && ( */}
+          <View
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+              gap: 10,
+              margin: 12,
+            }}
+          >
             <View
               style={{
                 display: "flex",
+                flexDirection: "row",
                 justifyContent: "space-between",
+                alignItems: "center",
                 gap: 10,
-                margin: 12,
               }}
             >
-              <View
-                style={{
-                  display: "flex",
-                  flexDirection: "row",
-                  justifyContent: "space-between",
-                  alignItems: "center",
-                  gap: 10,
-                }}
-              >
-                <TextInput
-                  editable={false}
-                  style={[
-                    {
-                      width: "90%",
-                      fontSize: 17,
-                      borderBottomWidth: 1,
-                      padding: 5,
-                      color: "black",
-                    },
-                  ]}
-                  placeholder="Task End Date*"
-                  placeholderTextColor={errorDate ? "red" : "grey"}
-                  value={expiry}
+              <TextInput
+                editable={false}
+                style={[
+                  {
+                    width: "90%",
+                    fontSize: 17,
+                    borderBottomWidth: 1,
+                    padding: 5,
+                    color: "black",
+                  },
+                ]}
+                placeholder="Task End Date*"
+                placeholderTextColor={errorDate ? "red" : "grey"}
+                value={expiry}
+              />
+              <TouchableOpacity onPress={openDatePickerSingle}>
+                <Icon
+                  name="calendar-outline"
+                  type="ionicon"
+                  size={30}
+                  color={colors.blue}
                 />
-                <TouchableOpacity onPress={openDatePickerSingle}>
-                  <Icon
-                    name="calendar-outline"
-                    type="ionicon"
-                    size={30}
-                    color={colors.blue}
-                  />
-                </TouchableOpacity>
-              </View>
-              {errorDate && (
-                <Text
-                  style={[tw`text-lg text-red-700`, { marginHorizontal: 12 }]}
-                >
-                  Required*
-                </Text>
-              )}
+              </TouchableOpacity>
             </View>
-          )}
+            {errorDate && (
+              <Text
+                style={[tw`text-lg text-red-700`, { marginHorizontal: 12 }]}
+              >
+                Required*
+              </Text>
+            )}
+          </View>
+          {/* )} */}
           <View style={[tw` flex flex-row justify-between`, { margin: 12 }]}>
             <TouchableOpacity onPress={() => setView(true)}>
               <Text

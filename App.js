@@ -10,6 +10,7 @@ import TaskOperation from "./Screens/Dashboard/Screens/TaskOperation/TaskOperati
 import tw from "tailwind-react-native-classnames";
 import { colors, day, month, months, todayDate, year } from "./store";
 import { getDatabase, initDatabase } from "./database";
+import Calender from "./Screens/Dashboard/Screens/Calender/Calender";
 
 const App = () => {
   const Stack = createStackNavigator();
@@ -127,6 +128,11 @@ const App = () => {
             <Stack.Screen
               name="StatisticsScreen"
               component={Statistics}
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
+              name="CalenderScreen"
+              component={Calender}
               options={{ headerShown: false }}
             />
 

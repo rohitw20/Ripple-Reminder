@@ -13,7 +13,7 @@ const Footer = () => {
     <View>
       <View
         style={[
-          tw`flex flex-row justify-between px-4 py-2 bg-white`,
+          tw`flex flex-row justify-between items-center px-4 py-2 bg-white`,
           { borderTopWidth: 1, borderTopColor: "rgb(229 231 235)" },
         ]}
       >
@@ -36,6 +36,28 @@ const Footer = () => {
             ]}
           >
             Tasks
+          </Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          onPress={() => {
+            setCurr("CalenderScreen");
+            navigation.navigate("CalenderScreen");
+          }}
+        >
+          <Icon
+            name="hourglass-outline"
+            type="ionicon"
+            color={curr === "CalenderScreen" ? colors.blue : "black"}
+            size={25}
+          />
+          <Text
+            style={[
+              tw`text-base font-semibold `,
+              { color: curr === "CalenderScreen" ? colors.blue : "black" },
+            ]}
+          >
+            Schedule
           </Text>
         </TouchableOpacity>
 

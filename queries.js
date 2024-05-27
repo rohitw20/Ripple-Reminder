@@ -2,11 +2,11 @@ import { getDatabase } from "./database";
 
 export const getAllTasks = `SELECT * FROM rippleReminder`;
 
-export const getTaskById = `SELECT * FROM rippleReminder WHERE taskId=?`;
+export const getTaskById = `SELECT * FROM onetime WHERE taskId=?`;
 
 export const createNewTask = `INSERT INTO rippleReminder (taskHeading, taskDescription, expiry) VALUES (?, ?, ?)`;
 
-export const updateCreatedTask = `UPDATE rippleReminder SET taskHeading = ?, taskDescription = ?, type = ?, expiry = ? WHERE taskId = ?`;
+export const updateCreatedTask = `UPDATE onetime SET taskHeading = ?, taskDescription = ?, expiry = ? WHERE taskId = ?`;
 
 export const deleteCreatedTask = `DELETE FROM rippleReminder WHERE taskId=?`;
 
