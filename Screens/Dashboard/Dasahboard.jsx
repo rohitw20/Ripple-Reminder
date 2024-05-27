@@ -9,6 +9,7 @@ import {
   colors,
   currentScreen,
   footerScreen,
+  oneTimeTasks,
   tasks,
   todayDate,
 } from "../../store";
@@ -23,6 +24,7 @@ const Dasahboard = () => {
 
   const [footerScreenName, setFooterScreenName] = useAtom(footerScreen);
   const [topics, setTopics] = useAtom(tasks);
+  const [oneTime, setOneTime] = useAtom(oneTimeTasks);
 
   useFocusEffect(() => setFooterScreenName("DashboardScreen"));
 
@@ -35,7 +37,10 @@ const Dasahboard = () => {
         if (db) {
           let result = [];
           const data = await db.getAllAsync(
-            `SELECT * FROM rippleReminder WHERE expiry >= DATE('now')`
+            `SELECT * FROM rippleReminder WHERE expiry = DATE('now') and isdeleted=0`
+          );
+          const oneTimeData = await db.getAllAsync(
+            `SELECT * FROM onetime WHERE expiry = DATE('now') and isdeleted=0`
           );
 
           for (const item of data) {
@@ -50,6 +55,7 @@ const Dasahboard = () => {
 
           if (isActive) {
             setTopics(result);
+            setOneTime(oneTimeData);
           }
         }
       };
@@ -59,7 +65,7 @@ const Dasahboard = () => {
       return () => {
         isActive = false;
       };
-    }, [topics])
+    }, [topics, oneTime])
   );
 
   return (
@@ -75,7 +81,7 @@ const Dasahboard = () => {
             navigator.navigate("DailyTasksScreen");
           }}
           style={[
-            tw` py-4  w-1/2 flex justify-center items-center`,
+            tw` py-2  w-1/2 flex justify-center items-center`,
             {
               backgroundColor:
                 screenName === "DailyTasksScreen" ? colors.green : "white",
@@ -92,7 +98,7 @@ const Dasahboard = () => {
           <Text
             style={tw` ${
               screenName === "DailyTasksScreen" && "text-white"
-            } font-bold text-xl`}
+            } font-semibold text-lg`}
           >
             Daily Tasks
           </Text>
@@ -103,7 +109,7 @@ const Dasahboard = () => {
             navigator.navigate("OneTimeTasksScreen");
           }}
           style={[
-            tw` py-4  w-1/2 flex justify-center items-center`,
+            tw` py-2  w-1/2 flex justify-center items-center`,
             {
               backgroundColor:
                 screenName === "OneTimeTasksScreen" ? colors.green : "white",
@@ -120,7 +126,7 @@ const Dasahboard = () => {
           <Text
             style={tw` ${
               screenName === "OneTimeTasksScreen" && "text-white"
-            } font-bold text-xl`}
+            } font-semibold text-lg`}
           >
             One Time Tasks
           </Text>

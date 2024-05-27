@@ -27,11 +27,11 @@ const Footer = () => {
             name="home"
             type="ionicon"
             color={curr === "DashboardScreen" ? colors.blue : "black"}
-            size={30}
+            size={25}
           />
           <Text
             style={[
-              tw`text-lg font-semibold `,
+              tw`text-base font-semibold `,
               { color: curr === "DashboardScreen" ? colors.blue : "black" },
             ]}
           >
@@ -49,11 +49,11 @@ const Footer = () => {
             name="aperture"
             type="ionicon"
             color={curr === "StatisticsScreen" ? colors.blue : "black"}
-            size={30}
+            size={25}
           />
           <Text
             style={[
-              tw`text-lg font-semibold `,
+              tw`text-base font-semibold `,
               { color: curr === "StatisticsScreen" ? colors.blue : "black" },
             ]}
           >
@@ -63,7 +63,7 @@ const Footer = () => {
       </View>
       <View
         style={[
-          tw`absolute w-full py-1 bottom-10 px-2  flex flex-row justify-center`,
+          tw`absolute w-full py-1 bottom-20 px-2  flex flex-row justify-end`,
           ,
         ]}
       >
@@ -81,7 +81,7 @@ const Footer = () => {
             },
           ]}
         >
-          <Icon name="add" type="ionicon" color="white" size={50} />
+          <Icon name="add" type="ionicon" color="white" size={40} />
           {/* <Text
           style={[
             tw`text-lg font-semibold `,

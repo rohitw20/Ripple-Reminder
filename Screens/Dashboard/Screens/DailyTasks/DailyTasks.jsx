@@ -31,12 +31,10 @@ const DailyTasks = () => {
       >
         <View style={[tw`px-2 pt-2 pb-10`]}>
           {/* <Text style={[tw`my-5 text-xl font-medium`]}>Incomplete Tasks</Text> */}
-          {topics
-            .filter((item) => item.type === "daily")
-            .map((item, index) => (
-              <TaskCard key={index} data={item} />
-            ))}
-          {topics?.filter((item) => item.type === "daily").length === 0 && (
+          {topics.map((item, index) => (
+            <TaskCard key={index} data={item} type={"daily"} />
+          ))}
+          {topics?.length === 0 && (
             <View
               style={[tw`flex items-center justify-center py-4 bg-gray-100`]}
             >
@@ -47,7 +45,7 @@ const DailyTasks = () => {
                 color={"gray"}
               />
               <Text style={[tw`text-3xl`, { color: "gray" }]}>
-                No more task for today
+                No tasks present!
               </Text>
             </View>
           )}

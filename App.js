@@ -22,12 +22,14 @@ const App = () => {
 
       const result = await db.getAllAsync(`SELECT * FROM dateKeeper`);
       const prevDate = result[0]?.dailyDate || todayDate;
-
+      // await db.runAsync(`UPDATE datekeeper set dailydate=?`, "2024-05-24");
+      // console.log(prevDate);
       if (todayDate > prevDate) {
         const allTasks = await db.getAllAsync(
-          `SELECT * FROM rippleReminder WHERE expiry=(?)`,
+          `SELECT * FROM rippleReminder WHERE expiry=(?) and isDeleted=0`,
           [prevDate]
         );
+
         const completedTasks = await db.getAllAsync(
           `
           SELECT * FROM ripplestatus WHERE expiry=(?)
@@ -42,27 +44,41 @@ const App = () => {
                 completed.status === "complete"
             )
         );
+        // console.log(incompleteTasks);
         for (const item of incompleteTasks) {
           await db.runAsync(
             `INSERT INTO ripplestatus (taskId, status, expiry) VALUES(?, ?, ?)`,
             [item.taskId, "expired", prevDate]
           );
         }
+        await db.runAsync(
+          `UPDATE ONETIME SET STATUS='expired' WHERE EXPIRY=? AND ISDELETED=0 AND STATUS<>'complete'`,
+          prevDate
+        );
         for (const item of allTasks) {
-          await db.runAsync(
-            `UPDATE rippleReminder set expiry=? where type='daily'`,
-            [todayDate]
-          );
+          await db.runAsync(`UPDATE rippleReminder set expiry=? `, [todayDate]);
         }
+
         await db.runAsync(`UPDATE datekeeper set dailydate=?`, todayDate);
       }
 
       // console.log(await db.getAllAsync(`select * from datekeeper`));
 
-      // const asdf = await db.getAllAsync(`SELECT * FROM ripplereminder`);
-      // const bsdf = await db.getAllAsync(`SELECT * FROM ripplestatus`);
-      // console.log(asdf, bsdf);
+      // const asdf = await db.getAllAsync(
+      //   `SELECT * FROM ripplereminder where expiry=?`,
+      //   prevDate
+      // );
+      // const bsdf = await db.getAllAsync(
+      //   `SELECT * FROM ripplestatus where expiry=?`,
+      //   prevDate
+      // );
+      // const csdf = await db.getAllAsync(
+      //   `SELECT * FROM onetime where expiry=?`,
+      //   prevDate
+      // );
+      // console.log(asdf, bsdf, csdf);
       // await db.execAsync(`DROP TABLE rippleReminder`);
+      // await db.execAsync(`DROP TABLE onetime`);
       // await db.execAsync(`DROP TABLE ripplestatus`);
       // await db.execAsync(`DROP TABLE dateKeeper`);
     };

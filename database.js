@@ -10,9 +10,19 @@ export const initDatabase = async () => {
       CREATE TABLE IF NOT EXISTS rippleReminder (
         taskId INTEGER PRIMARY KEY AUTOINCREMENT,
         taskHeading VARCHAR(40) NOT NULL,
+        taskDescription VARCHAR(500),  
+        expiry VARCHAR(10),
+        isdeleted INTEGER DEFAULT 0
+      )
+      `);
+    await db.execAsync(`
+      CREATE TABLE IF NOT EXISTS onetime (
+        taskId INTEGER PRIMARY KEY AUTOINCREMENT,
+        taskHeading VARCHAR(40) NOT NULL,
         taskDescription VARCHAR(500), 
-        type VARCHAR(20) NOT NULL,
-        expiry VARCHAR(10)
+        status VARCHAR(20) NOT NULL, 
+        expiry VARCHAR(10),
+        isdeleted INTEGER DEFAULT 0
       )
     `);
     await db.execAsync(`

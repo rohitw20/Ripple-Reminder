@@ -5,12 +5,17 @@ import tw from "tailwind-react-native-classnames";
 import TaskCard from "../../../../Components/TaskCard";
 import { useFocusEffect } from "@react-navigation/native";
 import { useAtom } from "jotai";
-import { colors, currentScreen, tasks, todayDate } from "../../../../store";
+import {
+  colors,
+  currentScreen,
+  oneTimeTasks,
+  todayDate,
+} from "../../../../store";
 import { Icon } from "react-native-elements";
 
 const OneTimeTasks = () => {
   const [screenName, setScreenName] = useAtom(currentScreen);
-  const [topics, _] = useAtom(tasks);
+  const [topics, _] = useAtom(oneTimeTasks);
 
   useFocusEffect(() => {
     setScreenName("OneTimeTasksScreen");
@@ -28,15 +33,11 @@ const OneTimeTasks = () => {
         <View style={[tw`px-2 pt-2 pb-10`]}>
           {/* <Text style={[tw`my-5 text-xl font-medium`]}>Incomplete Tasks</Text> */}
           {topics
-            .filter(
-              (item) => item.expiry === todayDate && item.type === "oneTime"
-            )
+            .filter((item) => item.expiry === todayDate)
             .map((item, index) => (
-              <TaskCard key={index} data={item} />
+              <TaskCard key={index} data={item} type={"oneTime"} />
             ))}
-          {topics?.filter(
-            (item) => item.expiry === todayDate && item.type === "oneTime"
-          ).length === 0 && (
+          {topics?.filter((item) => item.expiry === todayDate).length === 0 && (
             <View
               style={[tw`flex items-center justify-center py-4 bg-gray-100`]}
             >
@@ -47,7 +48,7 @@ const OneTimeTasks = () => {
                 color={"gray"}
               />
               <Text style={[tw`text-3xl`, { color: "gray" }]}>
-                No more task for today
+                No tasks present!
               </Text>
             </View>
           )}

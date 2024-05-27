@@ -5,10 +5,9 @@ import { colors, currentProgressScreen, footerScreen } from "../../store";
 import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import tw from "tailwind-react-native-classnames";
 import { createStackNavigator } from "@react-navigation/stack";
-import PieChartComp from "../../Components/PieChartComp";
-import BezierChartComp from "../../Components/BezierChartComp";
-import BarChartComp from "../../Components/BarChartComp";
 import { SafeAreaProvider } from "react-native-safe-area-context";
+import Daily from "./Daily";
+import OneTime from "./OneTime";
 
 const horizontalAnimation = {
   cardStyleInterpolator: ({ current, layouts }) => {
@@ -37,87 +36,52 @@ const Statistics = () => {
 
   return (
     <SafeAreaProvider>
-      <View style={[tw`flex flex-row justify-between  pb-2`]}>
+      {/* <Text style={[tw`bg-white text-xl text-center py-1`]}>Statistics</Text> */}
+      <View style={[tw`flex flex-row justify-between  `]}>
         <TouchableOpacity
           onPress={() => {
-            setCurr("ProgressRing");
-            navigation.navigate("ProgressRing");
+            setCurr("DailyProgress");
+            navigation.navigate("DailyProgress");
           }}
           style={[
-            tw`  py-2 w-1/3 border-b shadow-md px-4 flex items-center justify-center border-white `,
+            tw`  py-2 w-1/2 border shadow-md px-4 flex items-center justify-center bg-white`,
             {
-              backgroundColor: curr === "ProgressRing" ? colors.green : "white",
-              borderRightColor: "black",
-              borderWidth: 1,
+              borderBottomColor:
+                curr === "DailyProgress" ? colors.blue : "white",
+              borderBottomWidth: 1,
               borderTopWidth: 0,
               borderLeftWidth: 0,
-              borderBottomWidth: 0,
+              borderRightWidth: 0,
             },
           ]}
         >
           <Text
             style={[
-              tw`${
-                curr === "ProgressRing" ? "text-white" : "text-black"
-              } text-lg ${curr === "ProgressRing" && "font-bold text-xl"}`,
+              tw` 
+               text-lg`,
             ]}
           >
-            Daily
+            Daily Statistics
           </Text>
         </TouchableOpacity>
         <TouchableOpacity
           onPress={() => {
-            setCurr("ProgressBarChart");
-            navigation.navigate("ProgressBarChart");
+            setCurr("OneTimeProgress");
+            navigation.navigate("OneTimeProgress");
           }}
           style={[
-            tw`  py-2 w-1/3 border-b shadow-md px-4 flex items-center justify-center border-white `,
+            tw`  py-2 w-1/2 border shadow-md px-4 flex items-center justify-center bg-white`,
             {
-              backgroundColor:
-                curr === "ProgressBarChart" ? colors.green : "white",
-              borderRightColor: "black",
-              borderWidth: 1,
+              borderBottomColor:
+                curr === "OneTimeProgress" ? colors.blue : "white",
+              borderBottomWidth: 1,
               borderTopWidth: 0,
               borderLeftWidth: 0,
-              borderBottomWidth: 0,
+              borderRightWidth: 0,
             },
           ]}
         >
-          <Text
-            style={[
-              tw`${
-                curr === "ProgressBarChart" ? "text-white" : "text-black"
-              } text-lg ${curr === "ProgressBarChart" && "font-bold text-xl"}`,
-            ]}
-          >
-            Weekly
-          </Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => {
-            setCurr("ProgressLineChart");
-            navigation.navigate("ProgressLineChart");
-          }}
-          style={[
-            tw`  py-2 w-1/3 border-b shadow-md px-4 flex items-center justify-center border-white `,
-            {
-              backgroundColor:
-                curr === "ProgressLineChart" ? colors.green : "white",
-              borderTopWidth: 0,
-              borderLeftWidth: 0,
-              borderBottomWidth: 0,
-            },
-          ]}
-        >
-          <Text
-            style={[
-              tw`${
-                curr === "ProgressLineChart" ? "text-white" : "text-black"
-              } text-lg ${curr === "ProgressLineChart" && "font-bold text-xl"}`,
-            ]}
-          >
-            Monthly
-          </Text>
+          <Text style={[tw` text-lg `]}>One Time Statistics</Text>
         </TouchableOpacity>
       </View>
       <Stack.Navigator
@@ -142,18 +106,13 @@ const Statistics = () => {
         }}
       >
         <Stack.Screen
-          name="ProgressRing"
-          component={PieChartComp}
+          name="DailyProgress"
+          component={Daily}
           options={horizontalAnimation}
         />
         <Stack.Screen
-          name="ProgressBarChart"
-          component={BarChartComp}
-          options={horizontalAnimation}
-        />
-        <Stack.Screen
-          name="ProgressLineChart"
-          component={BezierChartComp}
+          name="OneTimeProgress"
+          component={OneTime}
           options={horizontalAnimation}
         />
       </Stack.Navigator>

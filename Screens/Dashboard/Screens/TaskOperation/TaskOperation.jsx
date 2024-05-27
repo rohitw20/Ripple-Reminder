@@ -89,12 +89,18 @@ const TaskOperation = () => {
     };
 
     if (db) {
-      const result = await db.runAsync(createNewTask, [
-        taskHeading,
-        taskDescription,
-        type,
-        expiry,
-      ]);
+      if (type === "daily") {
+        await db.runAsync(createNewTask, [
+          taskHeading,
+          taskDescription,
+          expiry,
+        ]);
+      } else {
+        await db.runAsync(
+          `INSERT INTO onetime (taskHeading, taskDescription, status, expiry) VALUES (?, ?, ?, ?)`,
+          [taskHeading, taskDescription, "incomplete", expiry]
+        );
+      }
     }
 
     // setTopics([...topics, task]);
@@ -120,9 +126,9 @@ const TaskOperation = () => {
           style={tw`bg-white flex items-center justify-center p-2 rounded-full shadow-lg`}
           onPress={() => navigation.goBack()}
         >
-          <Icon name="close" type="ionicon" size={30} />
+          <Icon name="close" type="ionicon" size={25} />
         </TouchableOpacity>
-        <Text style={[tw`text-2xl font-bold`]}>Add Task</Text>
+        <Text style={[tw`text-xl font-bold`]}>Add Task</Text>
       </View>
 
       <DatePicker

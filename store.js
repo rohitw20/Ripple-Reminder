@@ -64,12 +64,15 @@ export const getPrevious7Days = () => {
 
 export const currentScreen = atom("DailyTasksScreen");
 export const footerScreen = atom("DashboardScreen");
-export const currentProgressScreen = atom("ProgressRing");
+export const currentProgressScreen = atom("DailyProgress");
 export const taskId = atom("");
+export const showConfettiDaily = atom(false);
+export const showConfettiOneTime = atom(false);
 
 // export const tasks = atom([]);
 
 export const tasks = atom([]);
+export const oneTimeTasks = atom([]);
 
 // [{
 //   id: "1",
