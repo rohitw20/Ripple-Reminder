@@ -88,7 +88,7 @@ const Calender = () => {
           <TouchableOpacity
             style={styles.item}
             onPress={() => {
-              console.log(item);
+              //   console.log(item);
               setId(item.taskId);
               navigation.navigate("ViewTaskScreen");
             }}
