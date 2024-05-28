@@ -65,6 +65,7 @@ export const getPrevious7Days = () => {
 export const currentScreen = atom("DailyTasksScreen");
 export const footerScreen = atom("DashboardScreen");
 export const currentProgressScreen = atom("DailyProgress");
+
 export const taskId = atom("");
 export const showConfettiDaily = atom(false);
 export const showConfettiOneTime = atom(false);

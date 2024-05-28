@@ -116,19 +116,22 @@ const TaskOperation = () => {
   useFocusEffect(() => setFooterScreenName("TaskOperationScreen"));
   return (
     <View style={tw`bg-white h-full `}>
-      <View
-        style={[
-          tw`py-2 flex flex-row items-center justify-between px-5`,
-          { width: "70%" },
-        ]}
-      >
+      <View style={[tw`flex flex-row justify-between px-5`]}>
+        <View style={[tw`py-2 flex flex-row items-center  `, { gap: 20 }]}>
+          <TouchableOpacity
+            style={tw`bg-white flex items-center justify-center`}
+            onPress={() => navigation.goBack()}
+          >
+            <Icon name="close" type="ionicon" size={25} />
+          </TouchableOpacity>
+          <Text style={[tw`text-xl font-bold`]}>Add Task</Text>
+        </View>
         <TouchableOpacity
-          style={tw`bg-white flex items-center justify-center p-2 rounded-full shadow-lg`}
-          onPress={() => navigation.goBack()}
+          style={tw`bg-white flex items-center justify-center`}
+          onPress={createTask}
         >
-          <Icon name="close" type="ionicon" size={25} />
+          <Icon name="checkmark" type="ionicon" size={25} />
         </TouchableOpacity>
-        <Text style={[tw`text-xl font-bold`]}>Add Task</Text>
       </View>
 
       <DatePicker
@@ -174,7 +177,7 @@ const TaskOperation = () => {
       <View>
         <TextInput
           style={{
-            height: 140,
+            height: 50,
             margin: 12,
             padding: 5,
             borderBottomWidth: 1,
@@ -186,16 +189,53 @@ const TaskOperation = () => {
           placeholder="Description"
           editable
           multiline
-          numberOfLines={4}
+          // numberOfLines={4}
           maxLength={500}
         />
       </View>
 
-      <View
-        style={[tw`flex flex-row justify-between items-center`, { margin: 12 }]}
-      >
-        <Text style={[tw`text-xl font-bold`]}>Type of task :</Text>
-        <SelectDropdown
+      <View style={[tw`flex `, { margin: 12 }]}>
+        <Text style={[tw`text-xl text-center w-full `]}>Type of task</Text>
+        <View style={[tw`flex flex-row justify-between mt-5 px-10`]}>
+          <TouchableOpacity
+            onPress={() => setType("daily")}
+            style={[
+              tw` border border-gray-200 py-4 px-10 rounded-lg`,
+              {
+                backgroundColor: type === "daily" ? colors.blue : "white",
+              },
+            ]}
+          >
+            <Text
+              style={[
+                tw`text-base font-semibold ${type === "daily" && "text-white"}`,
+              ]}
+            >
+              Daily
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => setType("oneTime")}
+            style={[
+              tw`border border-gray-200 py-4 px-10 rounded-lg`,
+              {
+                backgroundColor: type === "oneTime" ? colors.blue : "white",
+              },
+            ]}
+          >
+            <Text
+              style={[
+                tw`text-base font-semibold ${
+                  type === "oneTime" && "text-white"
+                }`,
+              ]}
+            >
+              One Time
+            </Text>
+          </TouchableOpacity>
+        </View>
+
+        {/* <SelectDropdown
           data={options}
           onSelect={(selectedItem, index) => {
             setType(selectedItem.value);
@@ -224,7 +264,7 @@ const TaskOperation = () => {
           }}
           showsVerticalScrollIndicator={false}
           dropdownStyle={styles.dropdownMenuStyle}
-        />
+        /> */}
       </View>
 
       {type === "oneTime" && (
@@ -277,7 +317,7 @@ const TaskOperation = () => {
         </View>
       )}
 
-      <TouchableOpacity
+      {/* <TouchableOpacity
         onPress={createTask}
         style={[tw`flex items-center mt-10`]}
       >
@@ -289,7 +329,7 @@ const TaskOperation = () => {
         >
           Create Task
         </Text>
-      </TouchableOpacity>
+      </TouchableOpacity> */}
     </View>
   );
 };

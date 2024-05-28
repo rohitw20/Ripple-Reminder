@@ -44,9 +44,9 @@ const Calender = () => {
       setData(groupedTasks);
     };
     getData();
-  }, []);
+  }, [data]);
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={[styles.container, tw`border-t border-gray-200`]}>
       <Agenda
         selected={date}
         theme={{
@@ -59,6 +59,7 @@ const Calender = () => {
           todayButtonFontWeight: "bold",
         }}
         hideExtraDays={true}
+        showClosingKnob
         showOnlySelectedDayItems
         items={data}
         loadItemsForMonth={(day) => {
@@ -83,7 +84,7 @@ const Calender = () => {
             </View>
           );
         }}
-        endFillColor={"red"}
+        // endFillColor={"red"}
         renderItem={(item, isFirst) => (
           <TouchableOpacity
             style={styles.item}
@@ -109,7 +110,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: "center",
-    marginBottom: 20,
+    marginBottom: 2,
   },
   item: {
     backgroundColor: colors.blue,

@@ -59,11 +59,6 @@ const HomeScreen = () => {
           component={OneTimeTasks}
           options={horizontalAnimation}
         />
-        <Stack.Screen
-          name="ViewTaskScreen"
-          component={ViewTask}
-          options={horizontalAnimation}
-        />
       </Stack.Navigator>
     </View>
   );

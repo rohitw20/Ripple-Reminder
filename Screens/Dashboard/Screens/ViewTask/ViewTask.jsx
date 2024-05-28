@@ -81,7 +81,8 @@ const ViewTask = () => {
     //   )
     // );
 
-    setView(true);
+    // setView(true);
+    navigation.goBack();
   };
 
   useEffect(() => {
@@ -114,7 +115,7 @@ const ViewTask = () => {
           backgroundColor: "#fff",
         }}
       />
-      <View
+      {/* <View
         style={[
           tw`py-2 flex flex-row items-center justify-between px-5`,
           { width: "100%" },
@@ -136,8 +137,25 @@ const ViewTask = () => {
             </Text>
           )}
         </TouchableOpacity>
+      </View> */}
+      <View style={[tw`flex flex-row justify-between px-5`]}>
+        <View style={[tw`py-2 flex flex-row items-center  `, { gap: 20 }]}>
+          <TouchableOpacity
+            style={tw`bg-white flex items-center justify-center`}
+            onPress={() => navigation.goBack()}
+          >
+            <Icon name="close" type="ionicon" size={25} />
+          </TouchableOpacity>
+          <Text style={[tw`text-xl font-bold`]}>Edit Task</Text>
+        </View>
+        <TouchableOpacity
+          style={tw`bg-white flex items-center justify-center`}
+          onPress={handleSave}
+        >
+          <Icon name="checkmark" type="ionicon" size={25} />
+        </TouchableOpacity>
       </View>
-      {view ? (
+      {/* {view ? (
         <View
           style={[
             tw` flex p-5 rounded-xl shadow-2xl`,
@@ -168,136 +186,132 @@ const ViewTask = () => {
             </Text>
           </View>
         </View>
-      ) : (
-        <View
-          style={[
-            tw` flex p-5 `,
-            {
+      ) : ( */}
+      <View
+        style={[
+          tw` flex p-5 `,
+          {
+            margin: 12,
+            height: "60%",
+            gap: 10,
+          },
+        ]}
+      >
+        <View>
+          <TextInput
+            style={{
+              height: 50,
               margin: 12,
-              height: "60%",
-              gap: 10,
-            },
-          ]}
+              padding: 5,
+              borderBottomWidth: 1,
+              fontSize: 20,
+              fontWeight: "bold",
+              borderBottomColor: error ? "red" : "gray",
+            }}
+            onChangeText={setTaskHeading}
+            value={taskHeading}
+            placeholder="Heading *"
+            editable
+            placeholderTextColor={error ? "red" : "gray"}
+          />
+          {error && (
+            <Text style={[tw`text-lg text-red-700`, { marginHorizontal: 12 }]}>
+              Required*
+            </Text>
+          )}
+        </View>
+        <View>
+          <TextInput
+            style={{
+              height: 50,
+              margin: 12,
+              padding: 5,
+              borderBottomWidth: 1,
+              fontSize: 17,
+              borderBottomColor: "gray",
+            }}
+            onChangeText={setTaskDescription}
+            value={taskDescription}
+            placeholder="Description"
+            editable
+            multiline
+            // numberOfLines={4}
+            maxLength={500}
+          />
+        </View>
+        {/* {data?.type === "oneTime" && ( */}
+        <View
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            gap: 10,
+            margin: 12,
+          }}
         >
-          <View>
-            <TextInput
-              style={{
-                height: 50,
-                margin: 12,
-                padding: 5,
-                borderBottomWidth: 1,
-                fontSize: 20,
-                fontWeight: "bold",
-                borderBottomColor: error ? "red" : "gray",
-              }}
-              onChangeText={setTaskHeading}
-              value={taskHeading}
-              placeholder="Heading *"
-              editable
-              placeholderTextColor={error ? "red" : "gray"}
-            />
-            {error && (
-              <Text
-                style={[tw`text-lg text-red-700`, { marginHorizontal: 12 }]}
-              >
-                Required*
-              </Text>
-            )}
-          </View>
-          <View>
-            <TextInput
-              style={{
-                height: 200,
-                margin: 12,
-                padding: 5,
-                borderBottomWidth: 1,
-                fontSize: 17,
-                borderBottomColor: "gray",
-              }}
-              onChangeText={setTaskDescription}
-              value={taskDescription}
-              placeholder="Description"
-              editable
-              multiline
-              numberOfLines={4}
-              maxLength={500}
-            />
-          </View>
-          {/* {data?.type === "oneTime" && ( */}
           <View
             style={{
               display: "flex",
+              flexDirection: "row",
               justifyContent: "space-between",
+              alignItems: "center",
               gap: 10,
-              margin: 12,
             }}
           >
-            <View
-              style={{
-                display: "flex",
-                flexDirection: "row",
-                justifyContent: "space-between",
-                alignItems: "center",
-                gap: 10,
-              }}
-            >
-              <TextInput
-                editable={false}
-                style={[
-                  {
-                    width: "90%",
-                    fontSize: 17,
-                    borderBottomWidth: 1,
-                    padding: 5,
-                    color: "black",
-                  },
-                ]}
-                placeholder="Task End Date*"
-                placeholderTextColor={errorDate ? "red" : "grey"}
-                value={expiry}
+            <TextInput
+              editable={false}
+              style={[
+                {
+                  width: "90%",
+                  fontSize: 17,
+                  borderBottomWidth: 1,
+                  padding: 5,
+                  color: "black",
+                },
+              ]}
+              placeholder="Task End Date*"
+              placeholderTextColor={errorDate ? "red" : "grey"}
+              value={expiry}
+            />
+            <TouchableOpacity onPress={openDatePickerSingle}>
+              <Icon
+                name="calendar-outline"
+                type="ionicon"
+                size={30}
+                color={colors.blue}
               />
-              <TouchableOpacity onPress={openDatePickerSingle}>
-                <Icon
-                  name="calendar-outline"
-                  type="ionicon"
-                  size={30}
-                  color={colors.blue}
-                />
-              </TouchableOpacity>
-            </View>
-            {errorDate && (
-              <Text
-                style={[tw`text-lg text-red-700`, { marginHorizontal: 12 }]}
-              >
-                Required*
-              </Text>
-            )}
-          </View>
-          {/* )} */}
-          <View style={[tw` flex flex-row justify-between`, { margin: 12 }]}>
-            <TouchableOpacity onPress={() => setView(true)}>
-              <Text
-                style={[
-                  tw`text-xl text-white rounded-xl py-2 px-5`,
-                  { backgroundColor: colors.blue },
-                ]}
-              >
-                Cancel
-              </Text>
-            </TouchableOpacity>
-            <TouchableOpacity onPress={handleSave}>
-              <Text
-                style={[
-                  tw`text-xl text-white rounded-xl py-2 px-5`,
-                  { backgroundColor: colors.green },
-                ]}
-              >
-                Save
-              </Text>
             </TouchableOpacity>
           </View>
+          {errorDate && (
+            <Text style={[tw`text-lg text-red-700`, { marginHorizontal: 12 }]}>
+              Required*
+            </Text>
+          )}
         </View>
-      )}
+        {/* )} */}
+        {/* <View style={[tw` flex flex-row justify-between`, { margin: 12 }]}>
+          <TouchableOpacity onPress={() => setView(true)}>
+            <Text
+              style={[
+                tw`text-xl text-white rounded-xl py-2 px-5`,
+                { backgroundColor: colors.blue },
+              ]}
+            >
+              Cancel
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={handleSave}>
+            <Text
+              style={[
+                tw`text-xl text-white rounded-xl py-2 px-5`,
+                { backgroundColor: colors.green },
+              ]}
+            >
+              Save
+            </Text>
+          </TouchableOpacity>
+        </View> */}
+      </View>
+      {/* )} */}
     </View>
   );
 };

@@ -83,28 +83,29 @@ const Footer = () => {
           </Text>
         </TouchableOpacity>
       </View>
-      <View
-        style={[
-          tw`absolute w-full py-1 bottom-20 px-2  flex flex-row justify-end`,
-          ,
-        ]}
-      >
-        <TouchableOpacity
-          onPress={() => {
-            setCurr("TaskOperationScreen");
-            navigation.navigate("TaskOperationScreen");
-          }}
+      {curr === "DashboardScreen" && (
+        <View
           style={[
-            tw` rounded-full p-2 flex items-center justify-center shadow-md`,
-            {
-              backgroundColor: colors.green,
-              borderColor: curr === "TaskOperationScreen" ? colors.blue : "",
-              borderWidth: curr === "TaskOperationScreen" ? 2 : 0,
-            },
+            tw`absolute w-full py-1 bottom-20 px-2  flex flex-row justify-end`,
+            ,
           ]}
         >
-          <Icon name="add" type="ionicon" color="white" size={40} />
-          {/* <Text
+          <TouchableOpacity
+            onPress={() => {
+              setCurr("TaskOperationScreen");
+              navigation.navigate("TaskOperationScreen");
+            }}
+            style={[
+              tw` rounded-full p-2 flex items-center justify-center shadow-md`,
+              {
+                backgroundColor: colors.green,
+                borderColor: curr === "TaskOperationScreen" ? colors.blue : "",
+                borderWidth: curr === "TaskOperationScreen" ? 2 : 0,
+              },
+            ]}
+          >
+            <Icon name="add" type="ionicon" color="white" size={40} />
+            {/* <Text
           style={[
             tw`text-lg font-semibold `,
             { color: curr === "TaskOperationScreen" ? colors.blue : "black" },
@@ -112,8 +113,9 @@ const Footer = () => {
         >
           Create Task
         </Text> */}
-        </TouchableOpacity>
-      </View>
+          </TouchableOpacity>
+        </View>
+      )}
     </View>
   );
 };

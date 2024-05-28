@@ -8,12 +8,24 @@ import Statistics from "./Screens/Statistics/Statistics";
 import Footer from "./Screens/Footer/Footer";
 import TaskOperation from "./Screens/Dashboard/Screens/TaskOperation/TaskOperation";
 import tw from "tailwind-react-native-classnames";
-import { colors, day, month, months, todayDate, year } from "./store";
+import {
+  colors,
+  day,
+  footerScreen,
+  month,
+  months,
+  todayDate,
+  year,
+} from "./store";
 import { getDatabase, initDatabase } from "./database";
 import Calender from "./Screens/Dashboard/Screens/Calender/Calender";
+import { useAtom } from "jotai";
+import ViewTask from "./Screens/Dashboard/Screens/ViewTask/ViewTask";
 
 const App = () => {
   const Stack = createStackNavigator();
+
+  const [screen, _] = useAtom(footerScreen);
 
   useEffect(() => {
     const initializeDb = async () => {
@@ -92,14 +104,15 @@ const App = () => {
       <NavigationContainer>
         <SafeAreaView
           style={{
-            backgroundColor: colors.blue,
+            backgroundColor:
+              screen === "DashboardScreen" ? colors.blue : "white",
             display: "flex",
             flexDirection: "row",
             justifyContent: "space-between",
             width: "100%",
           }}
         >
-          <View style={[tw`py-4 flex px-5 `, { backgroundColor: colors.blue }]}>
+          {/*<View style={[tw`py-4 flex px-5 `, { backgroundColor: colors.blue }]}>
             <Text style={tw`text-white font-bold text-2xl`}>
               Ripple Reminder
             </Text>
@@ -112,7 +125,7 @@ const App = () => {
               {" "}
               {year}
             </Text>
-          </View>
+          </View>*/}
         </SafeAreaView>
         <KeyboardAvoidingView
           behavior={Platform.OS === "ios" ? "padding" : "height"}
@@ -135,7 +148,11 @@ const App = () => {
               component={Calender}
               options={{ headerShown: false }}
             />
-
+            <Stack.Screen
+              name="ViewTaskScreen"
+              component={ViewTask}
+              options={{ headerShown: false }}
+            />
             <Stack.Screen
               name="TaskOperationScreen"
               component={TaskOperation}

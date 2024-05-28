@@ -49,9 +49,10 @@ const Statistics = () => {
               borderBottomColor:
                 curr === "DailyProgress" ? colors.blue : "white",
               borderBottomWidth: 1,
-              borderTopWidth: 0,
+              borderTopWidth: 1,
               borderLeftWidth: 0,
               borderRightWidth: 0,
+              borderTopColor: "#f2f2f2",
             },
           ]}
         >
@@ -75,9 +76,10 @@ const Statistics = () => {
               borderBottomColor:
                 curr === "OneTimeProgress" ? colors.blue : "white",
               borderBottomWidth: 1,
-              borderTopWidth: 0,
+              borderTopWidth: 1,
               borderLeftWidth: 0,
               borderRightWidth: 0,
+              borderTopColor: "#f2f2f2",
             },
           ]}
         >

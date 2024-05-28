@@ -1,17 +1,21 @@
 import React, { useCallback, useEffect } from "react";
 import { createStackNavigator } from "@react-navigation/stack";
 import { SafeAreaProvider } from "react-native-safe-area-context";
-import { Text, TouchableOpacity, View } from "react-native";
+import { SafeAreaView, Text, TouchableOpacity, View } from "react-native";
 import HomeScreen from "./Screens/HomeScreen/HomeScreen";
 import tw from "tailwind-react-native-classnames";
 import { useAtom } from "jotai";
 import {
   colors,
   currentScreen,
+  day,
   footerScreen,
+  month,
+  months,
   oneTimeTasks,
   tasks,
   todayDate,
+  year,
 } from "../../store";
 import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import { getDatabase } from "../../database";
@@ -70,6 +74,28 @@ const Dasahboard = () => {
 
   return (
     <SafeAreaProvider style={{ backgroundColor: "white" }}>
+      <SafeAreaView
+        style={{
+          backgroundColor: colors.blue,
+          display: "flex",
+          flexDirection: "row",
+          justifyContent: "space-between",
+          width: "100%",
+        }}
+      >
+        <View style={[tw`py-4 flex px-5 `, { backgroundColor: colors.blue }]}>
+          <Text style={tw`text-white font-bold text-2xl`}>Ripple Reminder</Text>
+        </View>
+        <View style={[tw`px-2 py-2 flex flex-row items-center`]}>
+          <Text style={[tw`font-bold text-xl`, { color: "white" }]}>
+            {day}, {months[month - 1]}
+          </Text>
+          <Text style={[tw`font-bold text-3xl`, { color: "white" }]}>
+            {" "}
+            {year}
+          </Text>
+        </View>
+      </SafeAreaView>
       <View
         style={[
           tw`flex flex-row justify-between items-center bg-white shadow-md`,
