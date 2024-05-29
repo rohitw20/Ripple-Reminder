@@ -20,6 +20,7 @@ import {
 import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import { getDatabase } from "../../database";
 import { getAllTasks } from "../../queries";
+import { Image } from "react-native-elements";
 
 const Dasahboard = () => {
   const Stack = createStackNavigator();
@@ -81,10 +82,23 @@ const Dasahboard = () => {
           flexDirection: "row",
           justifyContent: "space-between",
           width: "100%",
+          paddingHorizontal: 10,
         }}
       >
-        <View style={[tw`py-4 flex px-5 `, { backgroundColor: colors.blue }]}>
-          <Text style={tw`text-white font-bold text-2xl`}>Ripple Reminder</Text>
+        <View
+          style={[
+            tw`py-4 flex flex-row items-center `,
+            { backgroundColor: colors.blue },
+          ]}
+        >
+          <Image
+            source={require("../../assets/logo.png")}
+            alt="logo"
+            // width={5}
+            // height={5}
+            style={[tw` w-11 h-11 mr-1 rounded-full `]}
+          />
+          <Text style={tw`text-white font-bold text-2xl`}>Daily TikTik</Text>
         </View>
         <View style={[tw`px-2 py-2 flex flex-row items-center`]}>
           <Text style={[tw`font-bold text-xl`, { color: "white" }]}>
@@ -126,7 +140,7 @@ const Dasahboard = () => {
               screenName === "DailyTasksScreen" && "text-white"
             } font-semibold text-lg`}
           >
-            Daily Tasks
+            Daily Tik
           </Text>
         </TouchableOpacity>
         <TouchableOpacity
@@ -154,7 +168,7 @@ const Dasahboard = () => {
               screenName === "OneTimeTasksScreen" && "text-white"
             } font-semibold text-lg`}
           >
-            One Time Tasks
+            Scheduled Tik
           </Text>
         </TouchableOpacity>
       </View>

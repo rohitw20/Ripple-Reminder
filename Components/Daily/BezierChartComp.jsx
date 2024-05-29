@@ -116,7 +116,7 @@ ORDER BY
               },
             ]}
           />
-          <Text>Total Tasks Completed</Text>
+          <Text>Total Tiks Completed</Text>
         </View>
       </View>
     </View>

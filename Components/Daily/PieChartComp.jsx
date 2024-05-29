@@ -128,7 +128,7 @@ const PieChartComp = () => {
         </View>
         <View>
           <Text style={[tw`text-base py-1 text-center text-white`]}>
-            {completedTasks} of {totalTasks} completed
+            {completedTasks} of {totalTasks} Tik completed
           </Text>
         </View>
       </View>
