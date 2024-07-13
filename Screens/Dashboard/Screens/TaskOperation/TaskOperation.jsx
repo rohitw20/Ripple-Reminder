@@ -124,13 +124,15 @@ const TaskOperation = () => {
           >
             <Icon name="close" type="ionicon" size={25} />
           </TouchableOpacity>
-          <Text style={[tw`text-xl font-bold`]}>Add Task</Text>
+          <Text style={[tw`text-xl font-bold`]}>
+            Add {screen === "DailyTasksScreen" ? "Daily" : "Scheduled"} Tik
+          </Text>
         </View>
         <TouchableOpacity
           style={tw`bg-white flex items-center justify-center`}
           onPress={createTask}
         >
-          <Icon name="checkmark" type="ionicon" size={25} />
+          {/* <Icon name="checkmark" type="ionicon" size={25} /> */}
         </TouchableOpacity>
       </View>
 
@@ -163,7 +165,7 @@ const TaskOperation = () => {
           }}
           onChangeText={setTaskHeading}
           value={taskHeading}
-          placeholder="Heading *"
+          placeholder="Title *"
           editable
           placeholderTextColor={error ? "red" : "gray"}
         />
@@ -194,7 +196,8 @@ const TaskOperation = () => {
         />
       </View>
 
-      <View style={[tw`flex `, { margin: 12 }]}>
+      {/* This is for selecting the type of task */}
+      {/* <View style={[tw`flex `, { margin: 12 }]}>
         <Text style={[tw`text-xl text-center w-full `]}>Type of task</Text>
         <View style={[tw`flex flex-row justify-between mt-5 px-10`]}>
           <TouchableOpacity
@@ -234,38 +237,7 @@ const TaskOperation = () => {
             </Text>
           </TouchableOpacity>
         </View>
-
-        {/* <SelectDropdown
-          data={options}
-          onSelect={(selectedItem, index) => {
-            setType(selectedItem.value);
-          }}
-          defaultValue={screen === "DailyTasksScreen" ? options[0] : options[1]}
-          renderButton={(selectedItem, isOpened) => {
-            return (
-              <View style={styles.dropdownButtonStyle}>
-                <Text style={styles.dropdownButtonTxtStyle}>
-                  {(selectedItem && selectedItem.title) || "Type of task"}
-                </Text>
-              </View>
-            );
-          }}
-          renderItem={(item, index, isSelected) => {
-            return (
-              <View
-                style={{
-                  ...styles.dropdownItemStyle,
-                  ...(isSelected && { backgroundColor: "#D2D9DF" }),
-                }}
-              >
-                <Text style={styles.dropdownItemTxtStyle}>{item.title}</Text>
-              </View>
-            );
-          }}
-          showsVerticalScrollIndicator={false}
-          dropdownStyle={styles.dropdownMenuStyle}
-        /> */}
-      </View>
+      </View> */}
 
       {type === "oneTime" && (
         <View
@@ -317,19 +289,19 @@ const TaskOperation = () => {
         </View>
       )}
 
-      {/* <TouchableOpacity
+      <TouchableOpacity
         onPress={createTask}
         style={[tw`flex items-center mt-10`]}
       >
         <Text
           style={[
-            tw`py-2 px-5 text-2xl font-bold text-white rounded-md`,
+            tw`py-3 px-5 text-2xl font-bold text-white rounded`,
             { backgroundColor: colors.blue },
           ]}
         >
-          Create Task
+          Create {screen === "DailyTasksScreen" ? "Daily" : "Scheduled"} Tik
         </Text>
-      </TouchableOpacity> */}
+      </TouchableOpacity>
     </View>
   );
 };

@@ -146,13 +146,13 @@ const ViewTask = () => {
           >
             <Icon name="close" type="ionicon" size={25} />
           </TouchableOpacity>
-          <Text style={[tw`text-xl font-bold`]}>Edit Task</Text>
+          <Text style={[tw`text-xl font-bold`]}>Edit Tik</Text>
         </View>
         <TouchableOpacity
           style={tw`bg-white flex items-center justify-center`}
           onPress={handleSave}
         >
-          <Icon name="checkmark" type="ionicon" size={25} />
+          {/* <Icon name="checkmark" type="ionicon" size={25} /> */}
         </TouchableOpacity>
       </View>
       {/* {view ? (
@@ -210,7 +210,7 @@ const ViewTask = () => {
             }}
             onChangeText={setTaskHeading}
             value={taskHeading}
-            placeholder="Heading *"
+            placeholder="Title *"
             editable
             placeholderTextColor={error ? "red" : "gray"}
           />
@@ -288,6 +288,18 @@ const ViewTask = () => {
           )}
         </View>
         {/* )} */}
+        <TouchableOpacity
+          onPress={handleSave}
+          style={[tw`flex items-center mt-10`]}
+        >
+          <Text
+            style={[
+              tw`py-3 px-5 text-2xl font-bold rounded border border-gray-400 text-gray-600`,
+            ]}
+          >
+            Edit Scheduled Tik
+          </Text>
+        </TouchableOpacity>
         {/* <View style={[tw` flex flex-row justify-between`, { margin: 12 }]}>
           <TouchableOpacity onPress={() => setView(true)}>
             <Text
